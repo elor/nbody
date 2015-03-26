@@ -1,0 +1,22 @@
+body {
+	width: 80%;
+}
+
+#plot {
+	position: relative;
+	width: 500px;
+	height: 500px;
+	border: black solid 1px;
+	background-color: #d3d3d3;
+}
+
+#plot > div {
+	display: block;
+	position: relative;
+	margin-top: -52px;
+	width: 50px;
+	height: 50px;
+	background-color: red;
+	border-radius: 25px;
+	border: black solid 1px;
+}

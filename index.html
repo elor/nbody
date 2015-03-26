@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8" />
+<title>Projekt</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<form>
+	<table>
+		<tr>
+			<td>Position</td>
+			<td><input type="text" value="4.0" id="x" /></td>
+			<td><input type="text" value="4.0" id="y" /></td>
+		</tr>
+		<tr>
+			<td>Geschwind</td>
+			<td><input type="text" value="4.0" id="vx" /></td>
+			<td><input type="text" value="4.0" id="vy" /></td>
+		</tr>
+		<tr>
+			<td>Zeit</td>
+			<td><input type="text" value="4.0" id="time" /></td>
+			<td></td>
+		</tr>
+
+		<tr>
+			<td>Reibung</td>
+			<td><input type="text" value="4.0" id="friction" /></td>
+			<td><button id="start"> Starten </button></td>
+		</tr>
+		<tr>
+			<td>Bounce</td>
+			<td><input type="text" value="4.0" id="bounce" /></td>
+			<td><button id="stop"> Stoppen </button></td>
+		</tr>
+	<table>
+</form>
+<div id="plot">
+</div>
+<script src="jquery.min.js"></script>
+<script src="main.js"></script>
+</body>
+</html>
