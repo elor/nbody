@@ -20,3 +20,15 @@ input {
 	border-radius: 25px;
 	border: black solid 1px;
 }
+
+#plot > div.guide {
+	display: block;
+	position: absolute;
+	margin-top: -6px;
+	margin-left: -6px;
+	width: 10px;
+	height: 10px;
+	background-color: black;
+	border-radius: 5px;
+	border: black solid 1px;
+}

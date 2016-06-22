@@ -1,9 +1,13 @@
 $(function($){
-	  var $ball, $plot, g, t, interval, date, width, height, ballsize, friction, bounce, state;
+	  var $ball, $plot, g, t, interval, date, width, height, ballsize, friction, bounce, state, mouse;
+
+    mouse = undefined;
 
 	  $plot = $('#plot');
 	  $ball = $('<div>');
     $plot.append($ball);
+	  $startball = $('<div>').addClass('guide');
+	  $endball = $('<div>').addClass('guide');
 
 	  ballsize = $ball.width() / 100;
     ballsize2 = ballsize*ballsize;
@@ -19,21 +23,22 @@ $(function($){
     g = -9.81;
     t = 0;
 
+    date = (new Date()).getTime();
+
 	  interval = undefined;	
 
 	  function update(){
-		    var newdate, dt, steps, i;
+		    var nowdate, dt, steps, i;
 		    
-		    newdate = (new Date()).getTime();
-		    dt = (newdate - date) / 1000;
-        if (dt > 0.1) {
-            dt = 0.1;
-        }
-		    date = newdate;
+		    nowdate = (new Date()).getTime();
 
-        steps = 10;
-        for (i = 0; i < steps; i += 1) {
-            ballphysics(dt/steps);
+        if (nowdate - date > 30) {
+            nowdate = date + 30;
+        }
+
+        dt = 0.001;
+        for (; date < nowdate; date += dt * 1e3) {
+            ballphysics(dt);
         }
 
 		    displayUpdate();
@@ -99,7 +104,7 @@ $(function($){
                     }
                     collided = true;
 		            } else if (state[i+0] < 0) {
-                        state[i+0] = 0;
+                    state[i+0] = 0;
                     if (state[i+1] < 0) {
 			                  state[i+1] *= -bounce;
 			                  state[i+3] *= friction;
@@ -147,8 +152,6 @@ $(function($){
         g = Math.round(g);
         b = Math.round(b);
 
-        console.log('#' + r.toString(16).replace(/^(.)$/, "0$1") + g.toString(16).replace(/^(.)$/, "0$1") + b.toString(16).replace(/^(.)$/, "0$1"));
-        
         return '#' + r.toString(16).replace(/^(.)$/, "0$1") + g.toString(16).replace(/^(.)$/, "0$1") + b.toString(16).replace(/^(.)$/, "0$1");
     }
 
@@ -160,9 +163,22 @@ $(function($){
                 $plot.append($ball.clone().css('background-color', randomColor()));
                 $balls = $plot.children();
             }
-            $ball = $balls.eq(ballid);
-			      setPosition($ball, 100 * state[ballid*4], 100 * state[ballid*4+2]);
+			      setPosition($balls.eq(ballid), 100 * state[ballid*4], 100 * state[ballid*4+2]);
 		    }
+
+        if (mouse) {
+            if (!$startball.parent().length) {
+                $plot.append($startball);
+            }
+            if (!$endball.parent().length) {
+                $plot.append($endball);
+            }
+            setPosition($startball, mouse.fromX, 100*height-mouse.fromY);
+            setPosition($endball, mouse.toX, 100*height-mouse.toY);
+        } else {
+            $startball.detach();
+            $endball.detach();
+        }
 	  }
 
 	  function setPosition($obj, x, y) {
@@ -197,32 +213,69 @@ $(function($){
         }
     }
 
-
     function addRandomBall(resting){
         return addBall({
-            offsetX: width * Math.random() * 100,
-            offsetY: height * Math.random() * 100,
+            pageX: width * Math.random() * 100 + $plot.offset().left,
+            pageY: height * Math.random() * 100 + $plot.offset().top,
             shiftKey: resting
         });
     }
 
     function addBall(e){
+        var vx, vy, x, y;
+
         if (e.ctrlKey) {
             return addRandomBalls(10, e.shiftKey);
         }
 
-        var vx = e.shiftKey ? 0 : 20*Math.random() - 10;
-        var vy = e.shiftKey ? 0 : 20*Math.random() - 10;
+        x = e.pageX;
+        y = e.pageY;
 
-		    state.push(e.offsetX / 100 - ballsize/2);
+        if (e.shiftKey) {
+            vx = 0;
+            vy = 0;
+        } else if (mouse) {
+            vx = (mouse.toX - mouse.fromX) / 10;
+            vy = (mouse.fromY - mouse.toY) / 10;
+            x = mouse.fromX;
+            y = mouse.fromY;
+            mouse = undefined;
+        } else {
+            vx = 20*Math.random() - 10;
+            vy = 20*Math.random() - 10;
+        }
+
+		    state.push(x / 100 - ballsize/2);
 		    state.push(vx);
-		    state.push(height - e.offsetY / 100 - ballsize/2);
+		    state.push(height - y / 100 - ballsize/2);
 		    state.push(vy);
 
 		    displayUpdate();
     }
 
 	  $plot.click(addBall);
+
+    $plot.on('mousedown', function(e){
+        mouse = {
+            fromX: e.pageX - $plot.offset().left,
+            fromY: e.pageY - $plot.offset().top,
+            toX: e.pageX - $plot.offset().left,
+            toY: e.pageY - $plot.offset().top
+        }
+        e.preventDefault();
+        return false;
+    }).on('mousemove', function(e){
+        if (e.buttons & 1) {
+            if (mouse) {
+                mouse.toX = e.pageX - $plot.offset().left;
+                mouse.toY = e.pageY - $plot.offset().top;
+            }
+            e.preventDefault();
+            return false;
+        } else {
+            mouse = undefined;
+        }
+    });
 
 	  $('#friction').change(function(e) {
 		    friction = Number($(this).val());
