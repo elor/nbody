@@ -1,36 +1,36 @@
 $(function($){
-	  var $ball, $plot, g, t, interval, date, width, height, ballsize, friction, bounce, state, mouse;
+      var $ball, $plot, g, t, interval, date, width, height, ballsize, friction, bounce, state, mouse;
 
     mouse = undefined;
 
-	  $plot = $('#plot');
-	  $ball = $('<div>');
+      $plot = $('#plot');
+      $ball = $('<div>');
     $plot.append($ball);
-	  $startball = $('<div>').addClass('guide');
-	  $endball = $('<div>').addClass('guide');
+      $startball = $('<div>').addClass('guide');
+      $endball = $('<div>').addClass('guide');
 
-	  ballsize = $ball.width() / 100;
+      ballsize = $ball.width() / 100;
     ballsize2 = ballsize*ballsize;
-	  width = $plot.width() / 100;
-	  height = $plot.height() / 100;
+      width = $plot.width() / 100;
+      height = $plot.height() / 100;
 
     state = [];
 
     window.State = state
 
-	  friction = 0.99;
+      friction = 0.99;
     bounce = 0.9;
     g = -9.81;
     t = 0;
 
     date = (new Date()).getTime();
 
-	  interval = undefined;	
+      interval = undefined;    
 
-	  function update(){
-		    var nowdate, dt, steps, i;
-		    
-		    nowdate = (new Date()).getTime();
+      function update(){
+            var nowdate, dt, steps, i;
+            
+            nowdate = (new Date()).getTime();
 
         if (nowdate - date > 30) {
             nowdate = date + 30;
@@ -41,8 +41,8 @@ $(function($){
             ballphysics(dt);
         }
 
-		    displayUpdate();
-	  }
+            displayUpdate();
+      }
 
     function ballphysics(dt) {
         var rate = new Array(state.length);
@@ -56,7 +56,7 @@ $(function($){
             rate[i+2] = state[i+3];
             // ay
             rate[i+3] = g;
-		    }
+            }
 
         // mutual collisions
         for (i = 0; i < state.length; i += 4) {
@@ -65,7 +65,7 @@ $(function($){
                 dy = state[i+2] - state[j+2];
 
                 r2 = dx*dx + dy*dy; 
-                if (r2 < ballsize2) {
+                if (r2 < ballsize2 && r2 > 0) {
                     r = Math.sqrt(r2);
                     F = 100 * (1/r - 1/ballsize);
 
@@ -90,46 +90,46 @@ $(function($){
         for (i = 0; i < state.length; i += 1) {
             state[i] += rate[i] * dt
         }
-	      t = t + dt;
+          t = t + dt;
 
         for (i = 0; i < state.length; i += 4) {
             do {
                 collided = false;
                 // left / right
-		            if (width < state[i+0] + ballsize) {
-			              state[i+0] = width - ballsize;
+                    if (width < state[i+0] + ballsize) {
+                          state[i+0] = width - ballsize;
                     if (state[i+1] > 0) {
-			                  state[i+1] *= -bounce;
+                              state[i+1] *= -bounce;
                         state[i+3] *= friction;
                     }
                     collided = true;
-		            } else if (state[i+0] < 0) {
+                    } else if (state[i+0] < 0) {
                     state[i+0] = 0;
                     if (state[i+1] < 0) {
-			                  state[i+1] *= -bounce;
-			                  state[i+3] *= friction;
+                              state[i+1] *= -bounce;
+                              state[i+3] *= friction;
                     }
                     collided = true;
-		            }
+                    }
 
-		            if (height < state[i+2] + ballsize) {
-			              state[i+2] = height - ballsize;
+                    if (height < state[i+2] + ballsize) {
+                          state[i+2] = height - ballsize;
                     if (state[i+3] > 0) {
                         state[i+1] *= friction;
-			                  state[i+3] *= -bounce;
+                              state[i+3] *= -bounce;
                     }
                     collided = true;
-		            } else if (state[i+2] < 0) {
+                    } else if (state[i+2] < 0) {
                     state[i+2] = 0;
                     if (state[i+3] < 0) {
                         state[i+1] *= friction;
-			                  state[i+3] *= -bounce;
+                              state[i+3] *= -bounce;
                     }
                     if (state[i+3] < 0.6) {
                         vy = 0;
                     }
                     collided = true;
-		            }
+                    }
             } while (collided);
         }
     }
@@ -156,15 +156,15 @@ $(function($){
     }
 
 
-	  function displayUpdate() {
+      function displayUpdate() {
         var $balls = $plot.children();
-		    for (ballid = 0; ballid*4 < state.length; ballid += 1) {
+            for (ballid = 0; ballid*4 < state.length; ballid += 1) {
             if (ballid >= $balls.length) {
                 $plot.append($ball.clone().css('background-color', randomColor()));
                 $balls = $plot.children();
             }
-			      setPosition($balls.eq(ballid), 100 * state[ballid*4], 100 * state[ballid*4+2]);
-		    }
+                  setPosition($balls.eq(ballid), 100 * state[ballid*4], 100 * state[ballid*4+2]);
+            }
 
         if (mouse) {
             if (!$startball.parent().length) {
@@ -179,36 +179,43 @@ $(function($){
             $startball.detach();
             $endball.detach();
         }
-	  }
+      }
 
-	  function setPosition($obj, x, y) {
-		    $obj.css('left', x);
-		    $obj.css('top', 100*height-y);
-	  }
+      function setPosition($obj, x, y) {
+            $obj.css('left', x);
+            $obj.css('top', 100*height-y);
+      }
 
-	  $('#start').click(function(e){
-		    // simulation starten, wenn sie noch nicht läuft
-		    if (interval === undefined) {
-			      date = (new Date()).getTime();
-			      interval = window.setInterval(update, 1);
-		    }
-		    e.preventDefault();
-		    return false;
-	  }).click();
+      $('#start').click(function(e){
+            // simulation starten, wenn sie noch nicht läuft
+            if (interval === undefined) {
+                  date = (new Date()).getTime();
+                  interval = window.setInterval(update, 1);
+            }
+            e.preventDefault();
+            return false;
+      }).click();
 
-	  $('#stop').click(function(e){
-		    // simulation stoppen
-	      if (interval !== undefined){
-			      window.clearInterval(interval);
-			      interval = undefined;
-		    }
-		    e.preventDefault();
-		    return false;
-	  });
+      $('#stop').click(function(e){
+            // simulation stoppen
+          if (interval !== undefined){
+                  window.clearInterval(interval);
+                  interval = undefined;
+            }
+            e.preventDefault();
+            return false;
+      });
+
+      $('#clear').click(function(e){
+        state = [];
+	$plot.children().detach();
+	e.preventDefault();
+	return false;
+      })
 
     function addRandomBalls(num, resting) {
         var i;
-	      for (i = 0; i < num; i += 1) {
+          for (i = 0; i < num; i += 1) {
             addRandomBall(resting);
         }
     }
@@ -245,15 +252,15 @@ $(function($){
             vy = 20*Math.random() - 10;
         }
 
-		    state.push(x / 100 - ballsize/2);
-		    state.push(vx);
-		    state.push(height - y / 100 - ballsize/2);
-		    state.push(vy);
+            state.push(x / 100 - ballsize/2);
+            state.push(vx);
+            state.push(height - y / 100 - ballsize/2);
+            state.push(vy);
 
-		    displayUpdate();
+            displayUpdate();
     }
 
-	  $plot.click(addBall);
+      $plot.click(addBall);
 
     $plot.on('mousedown', function(e){
         mouse = {
@@ -277,13 +284,17 @@ $(function($){
         }
     });
 
-	  $('#friction').change(function(e) {
-		    friction = Number($(this).val());
-	  }).val(friction);
+      $('#friction').change(function(e) {
+            friction = Number($(this).val());
+      }).val(friction);
 
-	  $('#bounce').change(function(e) {
-		    bounce = Number($(this).val());
-	  }).val(bounce);
+      $('#gravity').change(function(e) {
+            g = Number($(this).val());
+      }).val(g);
+
+      $('#bounce').change(function(e) {
+            bounce = Number($(this).val());
+      }).val(bounce);
 
     addRandomBalls(25);
 });
