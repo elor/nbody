@@ -1,34 +1,41 @@
 <!DOCTYPE html>
 <html lang="de">
-<head>
-<meta charset="utf-8" />
-<title>Projekt</title>
-<link rel="stylesheet" href="style.css" />
-</head>
-<body>
-<form>
-	<table>
-		<tr>
-			<td>Friction</td>
-			<td><input type="text" value="4.0" id="friction" /></td>
-			<td>Bounce</td>
-			<td><input type="text" value="4.0" id="bounce" /></td>
-			<td>Gravity</td>
-			<td><input type="text" value="4.0" id="gravity" /></td>
-			<td><button id="start">Start</button></td>
-			<td><button id="stop">Stop</button></td>
-			<td><button id="clear">Clear</button></td>
-		</tr>
-	<table>
-</form>
-<div id="plot">
-</div>
-<p>
-  <b>Click</b>: 1 ball with random velocity<br>
-  <b>Shift+Click</b>: 1 ball at rest<br>
-  <b>Ctrl+Click</b>: 10 random balls
-</p>
-<script src="jquery.min.js"></script>
-<script src="main.js"></script>
-</body>
+  <head>
+    <meta charset="utf-8" />
+    <title>Projekt</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <form>
+      Friction
+      <input type="text" value="4.0" id="friction" />
+      Bounce
+      <input type="text" value="4.0" id="bounce" />
+      Gravity
+      <input type="text" value="4.0" id="gravity" />
+      Attraction
+      <input type="text" value="4.0" id="attraction" />
+      <label for="periodic">Periodic</label>
+      <input type="checkbox" id="periodic" />
+      <button id="start">Start</button>
+      <button id="stop">Stop</button>
+      <button id="clear">Clear</button>
+    </form>
+    <br>
+    <div id="plot">
+    </div>
+    <table><tr>
+	<td>
+	    <b>Click</b>: 1 ball (drag for velocity)<br>
+	    <b>Shift+Click</b>: no velocity<br>
+	    <b>Ctrl+Click</b>: 10 random balls
+	</td>
+	<td>
+	  Particles: <input type="text" value="N/A" id="particles" />
+	  <br>
+	  Energy: <input type="text" value="N/A" id="energy" />
+	</td>
+    <script src="jquery.min.js"></script>
+    <script src="main.js"></script>
+  </body>
 </html>

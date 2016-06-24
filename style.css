@@ -1,4 +1,4 @@
-input {
+input[type="text"], input[type="number"] {
     width: 4em;
 }
 
@@ -8,6 +8,7 @@ input {
 	height: 800px;
 	border: black solid 1px;
 	background-color: #d3d3d3;
+	overflow: hidden;
 }
 
 #plot > div {
