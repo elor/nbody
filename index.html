@@ -6,36 +6,41 @@
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <form>
+    <div id="plot">
+    </div>
+    <form action="#" onsubmit="return false;">
       Friction
-      <input type="text" value="4.0" id="friction" />
+      <input type="number" value="0.99" step="0.01" id="friction" />
       Bounce
-      <input type="text" value="4.0" id="bounce" />
+      <input type="number" value="0.9" step="0.01" id="bounce" />
       Gravity
-      <input type="text" value="4.0" id="gravity" />
+      <input type="number" value="0.0" step="0.01" id="gravity" />
       Attraction
-      <input type="text" value="4.0" id="attraction" />
+      <input type="number" value="1.0" step="0.01" id="attraction" />
       <label for="periodic">Periodic</label>
       <input type="checkbox" id="periodic" />
+      <br>
+      <br>
+      <input type="submit" value="update" />
       <button id="start">Start</button>
       <button id="stop">Stop</button>
       <button id="clear">Clear</button>
+      <button id="center">Center</button>
     </form>
-    <br>
-    <div id="plot">
-    </div>
     <table><tr>
 	<td>
-	    <b>Click</b>: 1 ball (drag for velocity)<br>
-	    <b>Shift+Click</b>: no velocity<br>
-	    <b>Ctrl+Click</b>: 10 random balls
+	  <b>Click</b>: 1 ball (drag for velocity)<br>
+	  <b>Shift+Click</b>: velocity-nullifying ball<br>
+	  <b>Ctrl+Click</b>: 10 random balls
 	</td>
 	<td>
-	  Particles: <input type="text" value="N/A" id="particles" />
+	  Particles: <span type="text" id="particles"></span>
 	  <br>
-	  Energy: <input type="text" value="N/A" id="energy" />
+	  Energy (log): <span type="text" id="energy"></span>
+	  <br>
+	  Mean Velocity: <span type="text" id="velocity"></span>
 	</td>
-    <script src="jquery.min.js"></script>
-    <script src="main.js"></script>
+	<script src="jquery.min.js"></script>
+	<script src="main.js"></script>
   </body>
 </html>

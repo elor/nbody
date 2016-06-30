@@ -1,35 +1,5 @@
-input[type="text"], input[type="number"] {
-    width: 4em;
-}
-
-#plot {
-	position: relative;
-	width: 800px;
-	height: 800px;
-	border: black solid 1px;
-	background-color: #d3d3d3;
-	overflow: hidden;
-}
-
-#plot > div {
-	display: block;
-	position: absolute;
-	margin-top: -52px;
-	width: 50px;
-	height: 50px;
-	background-color: red;
-	border-radius: 25px;
-	border: black solid 1px;
-}
-
-#plot > div.guide {
-	display: block;
-	position: absolute;
-	margin-top: -6px;
-	margin-left: -6px;
-	width: 10px;
-	height: 10px;
-	background-color: black;
-	border-radius: 5px;
-	border: black solid 1px;
-}
+@import url("font.css");
+@import url("button.css");
+@import url("form.css");
+@import url("input.css");
+@import url("plot.css")

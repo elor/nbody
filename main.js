@@ -18,11 +18,11 @@ $(function($){
 
     window.State = state
 
-    periodic = false;
+    periodic = true;
     friction = 0.99;
     bounce = 0.9;
-    g = -9.81;
-    attract = 0.0;
+    g = 0.0;
+    attract = 1.0;
     t = 0;
 
     date = (new Date()).getTime();
@@ -232,8 +232,13 @@ $(function($){
         }
 
 	// update number output
-	$('#energy').val(calculateEnergy());
-	$('#particles').val(state.length / 4);
+	$('#energy').html('<br>' + Math.log(Math.max(1e-100, calculateEnergy())));
+	$('#particles').text(numBalls());
+	$('#velocity').html('<br>' + calculateMeanVelocity().vx + '<br>' + calculateMeanVelocity().vy);
+    }
+
+    function numBalls() {
+	return state.length / 4;
     }
 
     function setPosition($obj, x, y) {
@@ -275,11 +280,11 @@ $(function($){
         }
     }
 
-    function addRandomBall(resting){
+    function addRandomBall(nullify){
         return addBall({
             pageX: width * Math.random() * 100 + $plot.offset().left,
             pageY: height * Math.random() * 100 + $plot.offset().top,
-            shiftKey: resting
+            shiftKey: nullify
         });
     }
 
@@ -288,11 +293,60 @@ $(function($){
 	$plot.children().eq(index).remove();
     }
 
-    function addBall(e){
-        var vx, vy, x, y;
+    function calculateMeanVelocity() {
+	var i, vx, vy, ballCount;
+
+	vx = 0;
+	vy = 0;
+	ballCount = numBalls();
+
+	for (i = 0; i < state.length; i += 4 ) {
+	    vx += state[i+1] / ballCount;
+	    vy += state[i+3] / ballCount;
+	}
+
+	return {
+	    vx : vx,
+	    vy : vy
+	}
+    }
+
+    function calculateMeanPosition() {
+	var i, x, y, ballCount;
+
+	x = 0;
+	y = 0;
+	ballCount = numBalls();
+
+	for (i = 0; i < state.length; i += 4 ) {
+	    x += state[i] / ballCount;
+	    y += state[i+2] / ballCount;
+	}
+
+	return {
+	    x : x,
+	    y : y
+	}
+    }
+
+    function calculateMeanBall() {
+	var v, pos;
+
+	v = calculateMeanVelocity();
+	pos = calculateMeanPosition();
+
+	return {
+	    x: pos.x,
+	    y: pos.y,
+	    vx: v.vx,
+	    vy: v.vy
+	}
+    }
+
+    function addBall(e) {
+        var vx, vy, x, y, vMean;
 
 	if (e.button == 1) {
-		console.log(e.target);
 	    if ($(e.target).parent().data() == $plot.data()) {
 		$plot.children().each(function(index){
 		    if ($(this).data() == $(e.target).data()) {
@@ -312,8 +366,13 @@ $(function($){
         y = e.pageY;
 
         if (e.shiftKey) {
-            vx = 0;
-            vy = 0;
+	    vMean = calculateMeanVelocity();
+	    vx = -vMean.vx * numBalls();
+	    vy = -vMean.vy * numBalls();
+	    if (mouse) {
+		x = mouse.fromX;
+		y = mouse.fromY;
+	    }
         } else if (mouse) {
             vx = (mouse.toX - mouse.fromX) / 10;
             vy = (mouse.fromY - mouse.toY) / 10;
@@ -333,6 +392,20 @@ $(function($){
         displayUpdate();
     }
 
+    function centerBalls() {
+	var mean, i;
+
+	mean = calculateMeanBall();
+
+	for (i = 0; i < state.length; i += 4) {
+	    state[i] -= mean.x - (width - ballsize)/2;
+	    state[i+1] -= mean.vx;
+	    state[i+2] -= mean.y - (height - ballsize)/2;
+	    state[i+3] -= mean.vy;
+	}
+	displayUpdate();
+    }
+
     $plot.click(addBall);
 
     $plot.on('mousedown', function(e){
@@ -342,6 +415,7 @@ $(function($){
             toX: e.pageX - $plot.offset().left,
             toY: e.pageY - $plot.offset().top
         }
+	displayUpdate();
         e.preventDefault();
         return false;
     }).on('mousemove', function(e){
@@ -350,6 +424,7 @@ $(function($){
                 mouse.toX = e.pageX - $plot.offset().left;
                 mouse.toY = e.pageY - $plot.offset().top;
             }
+	    displayUpdate();
             e.preventDefault();
             return false;
         } else {
@@ -376,6 +451,8 @@ $(function($){
     $('#periodic').change(function(e) {
 	periodic = $(this).prop('checked');
     }).prop('checked', periodic);
+
+    $('#center').click(centerBalls);
 
     addRandomBalls(25);
 });

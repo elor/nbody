@@ -1,0 +1,16 @@
+button, input[type="submit"] {
+    border: solid 1px #d0d0d0;
+    background: linear-gradient(#f0f0f0, #e8e8e8);
+    border-radius: 0.5em;
+    font-weight: bold;
+    padding: 0.5em 1em;
+    outline: none;
+}
+
+button:hover, input[type="submit"]:hover {
+    background: #f0f0f0;
+}
+
+button:active, input[type="submit"]:active {
+    background: linear-gradient(#e8e8e8, #f0f0f0);
+}
