@@ -19,6 +19,7 @@ $(function($){
     window.State = state
 
     periodic = true;
+    collisions = true;
     friction = 0.99;
     bounce = 0.9;
     g = 0.0;
@@ -85,6 +86,7 @@ $(function($){
 		    }
 		}
 
+        if (collisions) {
                 r2 = dx*dx + dy*dy; 
                 if (r2 < ballsize2 && r2 > 0) {
                     r = Math.sqrt(r2);
@@ -103,7 +105,7 @@ $(function($){
                     rate[j+1] -= (1-bounce) * 10 * -dvx;
                     rate[j+3] -= (1-bounce) * 10 * -dvy;
                 }
-
+}
 		if (attract != 0.0 && r2 > 0) {
 		    F = - attract / r2;
 		    rate[i+1] += F * dx;
@@ -451,6 +453,10 @@ $(function($){
     $('#periodic').change(function(e) {
 	periodic = $(this).prop('checked');
     }).prop('checked', periodic);
+
+    $('#collisions').change(function(e) {
+	collisions = $(this).prop('checked');
+    }).prop('checked', collisions);
 
     $('#center').click(centerBalls);
 
