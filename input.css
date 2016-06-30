@@ -17,7 +17,7 @@ input:not([type="submit"]):focus {
 }
 
 input[type="number"] {
-    width: 3em;
+    width: 4em;
 }
 
 input[type="checkbox"], input[type="radio"] {
