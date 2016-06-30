@@ -50,7 +50,7 @@ $(function($){
     function ballphysics(dt) {
         var rate, i, dx, dy, dvx, dvy;
 
-	rate = new Array(state.length);
+        rate = new Array(state.length);
 
         for (i = 0; i < state.length; i += 4) {
             // vx
@@ -68,106 +68,106 @@ $(function($){
             for (j = i+4; j < state.length; j += 4) {
                 dx = state[i] - state[j];
                 dy = state[i+2] - state[j+2];
-		dvx = state[i+1] - state[j+1];
-		dvy = state[i+3] - state[j+3];
+                dvx = state[i+1] - state[j+1];
+                dvy = state[i+3] - state[j+3];
 
-		if (periodic) {
-		    if (dx > width/2) {
-			dx -= width;
-		    }
-		    if (dx < -width/2) {
-			dx += width;
-		    }
-		    if (dy > height/2) {
-			dy -= height;
-		    }
-		    if (dy < -height/2) {
-			dy += height;
-		    }
-		}
-
-        if (collisions) {
-                r2 = dx*dx + dy*dy; 
-                if (r2 < ballsize2 && r2 > 0) {
-                    r = Math.sqrt(r2);
-                    F = 100 * (1/r - 1/ballsize);
-
-                    nx = dx / r;
-                    ny = dy / r;
-
-                    rate[i+1] += F * nx;
-                    rate[j+1] -= F * nx;
-                    rate[i+3] += F * ny;
-                    rate[j+3] -= F * ny;
-
-                    rate[i+1] -= (1-bounce) * 10 * dvx;
-                    rate[i+3] -= (1-bounce) * 10 * dvy;
-                    rate[j+1] -= (1-bounce) * 10 * -dvx;
-                    rate[j+3] -= (1-bounce) * 10 * -dvy;
+                if (periodic) {
+                    if (dx > width/2) {
+                        dx -= width;
+                    }
+                    if (dx < -width/2) {
+                        dx += width;
+                    }
+                    if (dy > height/2) {
+                        dy -= height;
+                    }
+                    if (dy < -height/2) {
+                        dy += height;
+                    }
                 }
-}
-		if (attract != 0.0 && r2 > 0) {
-		    F = - attract / r2;
-		    rate[i+1] += F * dx;
-		    rate[i+3] += F * dy;
-		    rate[j+1] -= F * dx;
-		    rate[j+3] -= F * dy;
-		}
+
+                if (collisions) {
+                    r2 = dx*dx + dy*dy; 
+                    if (r2 < ballsize2 && r2 > 0) {
+                        r = Math.sqrt(r2);
+                        F = 100 * (1/r - 1/ballsize);
+
+                        nx = dx / r;
+                        ny = dy / r;
+
+                        rate[i+1] += F * nx;
+                        rate[j+1] -= F * nx;
+                        rate[i+3] += F * ny;
+                        rate[j+3] -= F * ny;
+
+                        rate[i+1] -= (1-bounce) * 10 * dvx;
+                        rate[i+3] -= (1-bounce) * 10 * dvy;
+                        rate[j+1] -= (1-bounce) * 10 * -dvx;
+                        rate[j+3] -= (1-bounce) * 10 * -dvy;
+                    }
+                }
+                if (attract != 0.0 && r2 > 0) {
+                    F = - attract / r2;
+                    rate[i+1] += F * dx;
+                    rate[i+3] += F * dy;
+                    rate[j+1] -= F * dx;
+                    rate[j+3] -= F * dy;
+                }
             }
         }
 
-	// advance state according to rate
+        // advance state according to rate
         for (i = 0; i < state.length; i += 1) {
             state[i] += rate[i] * dt
         }
         t = t + dt;
 
-	// set boundary conditions
+        // set boundary conditions
         for (i = 0; i < state.length; i += 4) {
 
-	    if (periodic) {
-		state[i] = (state[i] + width + ballsize/2) % width - ballsize/2;
-		state[i+2] = (state[i+2] + height + ballsize/2) % height - ballsize/2;
-	    } else {
-		do {
+            if (periodic) {
+                state[i] = (state[i] + width + ballsize/2) % width - ballsize/2;
+                state[i+2] = (state[i+2] + height + ballsize/2) % height - ballsize/2;
+            } else {
+                do {
                     collided = false;
                     // left / right
                     if (width < state[i+0] + ballsize) {
-			state[i+0] = width - ballsize;
-			if (state[i+1] > 0) {
+                        state[i+0] = width - ballsize;
+                        if (state[i+1] > 0) {
                             state[i+1] *= -bounce;
                             state[i+3] *= friction;
-			}
-			collided = true;
+                        }
+                        collided = true;
                     } else if (state[i+0] < 0) {
-			state[i+0] = 0;
-			if (state[i+1] < 0) {
+                        state[i+0] = 0;
+                        if (state[i+1] < 0) {
                             state[i+1] *= -bounce;
                             state[i+3] *= friction;
-			}
-			collided = true;
+                        }
+                        collided = true;
                     }
 
                     if (height < state[i+2] + ballsize) {
-			state[i+2] = height - ballsize;
-			if (state[i+3] > 0) {
+                        state[i+2] = height - ballsize;
+                        if (state[i+3] > 0) {
                             state[i+1] *= friction;
                             state[i+3] *= -bounce;
-			}
-			collided = true;
+                        }
+                        collided = true;
                     } else if (state[i+2] < 0) {
-			state[i+2] = 0;
-			if (state[i+3] < 0) {
+                        state[i+2] = 0;
+                        if (state[i+3] < 0) {
                             state[i+1] *= friction;
                             state[i+3] *= -bounce;
-			}
-			if (state[i+3] < 0.6) {
+                        }
+                        if (state[i+3] < 0.6) {
                             vy = 0;
-			}
-			collided = true;
+                        }
+                        collided = true;
                     }
-		} while (collided);
-	    }
+                } while (collided);
+            }
         }
     }
 
@@ -193,23 +193,23 @@ $(function($){
     }
 
     function calculateEnergy() {
-	var ballid, energy, vx, vy, v2;
+        var ballid, energy, vx, vy, v2;
 
-	energy = 0.0;
-	for (ballid = 0; ballid < state.length; ballid += 4) {
-	    vx = state[ballid+1];
-	    vy = state[ballid+3];
-	    v2 = vx*vx + vy*vy;
-	    energy += v2;
-	}
+        energy = 0.0;
+        for (ballid = 0; ballid < state.length; ballid += 4) {
+            vx = state[ballid+1];
+            vy = state[ballid+3];
+            v2 = vx*vx + vy*vy;
+            energy += v2;
+        }
 
-	return energy;
+        return energy;
     }
 
     function displayUpdate() {
         var $balls = $plot.children();
 
-	// update balls
+        // update balls
         for (ballid = 0; ballid*4 < state.length; ballid += 1) {
             if (ballid >= $balls.length) {
                 $plot.append($ball.clone().css('background-color', randomColor()));
@@ -218,7 +218,7 @@ $(function($){
             setPosition($balls.eq(ballid), 100 * state[ballid*4], 100 * state[ballid*4+2]);
         }
 
-	// update cursor points
+        // update cursor points
         if (mouse) {
             if (!$startball.parent().length) {
                 $plot.append($startball);
@@ -233,14 +233,14 @@ $(function($){
             $endball.detach();
         }
 
-	// update number output
-	$('#energy').html('<br>' + Math.log(Math.max(1e-100, calculateEnergy())));
-	$('#particles').text(numBalls());
-	$('#velocity').html('<br>' + calculateMeanVelocity().vx + '<br>' + calculateMeanVelocity().vy);
+        // update number output
+        $('#energy').html('<br>' + Math.log(Math.max(1e-100, calculateEnergy())));
+        $('#particles').text(numBalls());
+        $('#velocity').html('<br>' + calculateMeanVelocity().vx + '<br>' + calculateMeanVelocity().vy);
     }
 
     function numBalls() {
-	return state.length / 4;
+        return state.length / 4;
     }
 
     function setPosition($obj, x, y) {
@@ -270,9 +270,9 @@ $(function($){
 
     $('#clear').click(function(e){
         state = [];
-	$plot.children().detach();
-	e.preventDefault();
-	return false;
+        $plot.children().detach();
+        e.preventDefault();
+        return false;
     })
 
     function addRandomBalls(num, resting) {
@@ -291,74 +291,74 @@ $(function($){
     }
 
     function removeBall(index) {
-	state.splice(4*index, 4);
-	$plot.children().eq(index).remove();
+        state.splice(4*index, 4);
+        $plot.children().eq(index).remove();
     }
 
     function calculateMeanVelocity() {
-	var i, vx, vy, ballCount;
+        var i, vx, vy, ballCount;
 
-	vx = 0;
-	vy = 0;
-	ballCount = numBalls();
+        vx = 0;
+        vy = 0;
+        ballCount = numBalls();
 
-	for (i = 0; i < state.length; i += 4 ) {
-	    vx += state[i+1] / ballCount;
-	    vy += state[i+3] / ballCount;
-	}
+        for (i = 0; i < state.length; i += 4 ) {
+            vx += state[i+1] / ballCount;
+            vy += state[i+3] / ballCount;
+        }
 
-	return {
-	    vx : vx,
-	    vy : vy
-	}
+        return {
+            vx : vx,
+            vy : vy
+        }
     }
 
     function calculateMeanPosition() {
-	var i, x, y, ballCount;
+        var i, x, y, ballCount;
 
-	x = 0;
-	y = 0;
-	ballCount = numBalls();
+        x = 0;
+        y = 0;
+        ballCount = numBalls();
 
-	for (i = 0; i < state.length; i += 4 ) {
-	    x += state[i] / ballCount;
-	    y += state[i+2] / ballCount;
-	}
+        for (i = 0; i < state.length; i += 4 ) {
+            x += state[i] / ballCount;
+            y += state[i+2] / ballCount;
+        }
 
-	return {
-	    x : x,
-	    y : y
-	}
+        return {
+            x : x,
+            y : y
+        }
     }
 
     function calculateMeanBall() {
-	var v, pos;
+        var v, pos;
 
-	v = calculateMeanVelocity();
-	pos = calculateMeanPosition();
+        v = calculateMeanVelocity();
+        pos = calculateMeanPosition();
 
-	return {
-	    x: pos.x,
-	    y: pos.y,
-	    vx: v.vx,
-	    vy: v.vy
-	}
+        return {
+            x: pos.x,
+            y: pos.y,
+            vx: v.vx,
+            vy: v.vy
+        }
     }
 
     function addBall(e) {
         var vx, vy, x, y, vMean;
 
-	if (e.button == 1) {
-	    if ($(e.target).parent().data() == $plot.data()) {
-		$plot.children().each(function(index){
-		    if ($(this).data() == $(e.target).data()) {
-			removeBall(index);
-		    }
-		});
-	    }
-	    displayUpdate();
-	    return;
-	}
+        if (e.button == 1) {
+            if ($(e.target).parent().data() == $plot.data()) {
+                $plot.children().each(function(index){
+                    if ($(this).data() == $(e.target).data()) {
+                        removeBall(index);
+                    }
+                });
+            }
+            displayUpdate();
+            return;
+        }
 
         if (e.ctrlKey) {
             return addRandomBalls(10, e.shiftKey);
@@ -368,13 +368,13 @@ $(function($){
         y = e.pageY;
 
         if (e.shiftKey) {
-	    vMean = calculateMeanVelocity();
-	    vx = -vMean.vx * numBalls();
-	    vy = -vMean.vy * numBalls();
-	    if (mouse) {
-		x = mouse.fromX;
-		y = mouse.fromY;
-	    }
+            vMean = calculateMeanVelocity();
+            vx = -vMean.vx * numBalls();
+            vy = -vMean.vy * numBalls();
+            if (mouse) {
+                x = mouse.fromX;
+                y = mouse.fromY;
+            }
         } else if (mouse) {
             vx = (mouse.toX - mouse.fromX) / 10;
             vy = (mouse.fromY - mouse.toY) / 10;
@@ -395,17 +395,17 @@ $(function($){
     }
 
     function centerBalls() {
-	var mean, i;
+        var mean, i;
 
-	mean = calculateMeanBall();
+        mean = calculateMeanBall();
 
-	for (i = 0; i < state.length; i += 4) {
-	    state[i] -= mean.x - (width - ballsize)/2;
-	    state[i+1] -= mean.vx;
-	    state[i+2] -= mean.y - (height - ballsize)/2;
-	    state[i+3] -= mean.vy;
-	}
-	displayUpdate();
+        for (i = 0; i < state.length; i += 4) {
+            state[i] -= mean.x - (width - ballsize)/2;
+            state[i+1] -= mean.vx;
+            state[i+2] -= mean.y - (height - ballsize)/2;
+            state[i+3] -= mean.vy;
+        }
+        displayUpdate();
     }
 
     $plot.click(addBall);
@@ -417,7 +417,7 @@ $(function($){
             toX: e.pageX - $plot.offset().left,
             toY: e.pageY - $plot.offset().top
         }
-	displayUpdate();
+        displayUpdate();
         e.preventDefault();
         return false;
     }).on('mousemove', function(e){
@@ -426,7 +426,7 @@ $(function($){
                 mouse.toX = e.pageX - $plot.offset().left;
                 mouse.toY = e.pageY - $plot.offset().top;
             }
-	    displayUpdate();
+            displayUpdate();
             e.preventDefault();
             return false;
         } else {
@@ -443,19 +443,19 @@ $(function($){
     }).val(-g);
 
     $('#attraction').change(function(e) {
-	attract = Number($(this).val());
+        attract = Number($(this).val());
     }).val(attract);
 
     $('#bounce').change(function(e) {
-	bounce = Number($(this).val());
+        bounce = Number($(this).val());
     }).val(bounce);
 
     $('#periodic').change(function(e) {
-	periodic = $(this).prop('checked');
+        periodic = $(this).prop('checked');
     }).prop('checked', periodic);
 
     $('#collisions').change(function(e) {
-	collisions = $(this).prop('checked');
+        collisions = $(this).prop('checked');
     }).prop('checked', collisions);
 
     $('#center').click(centerBalls);
