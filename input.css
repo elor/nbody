@@ -1,34 +1,38 @@
 input:not([type="submit"]) {
-    font-weight: bold;
-    border: solid 1px #e5e5e5;
-    padding: 0.3em;
-    outline: none;
-/*    box-shadow: inset 0px 1px 0px 0px rgba(64, 64, 64, 0.25); */
-    transition: background-color 0.25s, box-shadow 0.1s;
+  font-weight: bold;
+  border: solid 1px #e5e5e5;
+  padding: 0.3em;
+  outline: none;
+  /*    box-shadow: inset 0px 1px 0px 0px rgba(64, 64, 64, 0.25); */
+  transition: background-color 0.25s, box-shadow 0.1s;
 }
 
-input:not([type="submit"]).mini {
+  input:not([type="submit"]).mini {
     padding: 0em 0.2em;
     border-radius: 0.2em;
-}
+  }
 
-input:not([type="submit"]):focus {
+  input:not([type="submit"]):focus {
     box-shadow: inset 0px 1px 4px 0px rgba(0, 128, 255, 0.5);
-}
+  }
 
 input[type="number"] {
-    width: 4em;
+  width: 4em;
+}
+
+input[type="text"] {
+  width: 6em;
 }
 
 input[type="checkbox"], input[type="radio"] {
-    background-color: #ffffff;
-    -webkit-appearance: initial;
-    width: 1.2em;
-    height: 1.2em;
-    vertical-align: middle;
-    border-radius: 100%;
+  background-color: #ffffff;
+  -webkit-appearance: initial;
+  width: 1.2em;
+  height: 1.2em;
+  vertical-align: middle;
+  border-radius: 100%;
 }
 
-input[type="checkbox"]:checked, input[type="radio"]:checked {
+  input[type="checkbox"]:checked, input[type="radio"]:checked {
     background-color: #5e5e5e;
-}
+  }

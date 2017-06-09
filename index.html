@@ -1,48 +1,84 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="de">
-  <head>
-    <meta charset="utf-8" />
-    <title>Projekt</title>
-    <link rel="stylesheet" href="style.css" />
-  </head>
-  <body>
-    <div id="plot">
+<head>
+  <meta charset="utf-8" />
+  <title>N-Body Testbed</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="vue.min.js"></script>
+  <script src="vue-components.js"></script>
+  <script src="physics.js"></script>
+  <script src="initdata.js"></script>
+  <script src="main.js"></script>
+</head>
+<body>
+  <div id="app">
+    <div id="plot" v-bind:style="plotsize" v-on:click.self="addBall">
+      <n-ball v-bind:ball="ball" v-for="(ball,index) in balls"></n-ball>
     </div>
-    <form action="#" onsubmit="return false;">
-      Friction
-      <input type="number" value="0.99" step="0.01" id="friction" />
-      Bounce
-      <input type="number" value="0.9" step="0.01" id="bounce" />
-      Gravity
-      <input type="number" value="0.0" step="0.01" id="gravity" />
-      Attraction
-      <input type="number" value="1.0" step="0.01" id="attraction" />
-      <input type="checkbox" id="periodic" />
-      <label for="periodic">Periodic</label>
-      <input type="checkbox" id="collisions" />
-      <label for="collisions">Collisions</label>
-      <br>
-      <br>
-      <input type="submit" value="update" />
-      <button id="start">Start</button>
-      <button id="stop">Stop</button>
-      <button id="clear">Clear</button>
-      <button id="center">Center</button>
+    <div id="elements">
+      <div class="element-container" v-bind:class="{ selected: index === selectedElement }" v-for="(element,index) in elements" v-on:click="selectElement(index)">
+        <n-element v-bind:element="element"></n-element>
+      </div>
+      <div class="element-container" v-on:click="addElement">
+        +
+      </div>
+    </div>
+    <form v-on:submit.prevent>
+      <fieldset>
+        <div class="element-container">
+          <n-element v-bind:element="elements[selectedElement]"></n-element>
+        </div>
+        <p>
+          <label>Selected</label>
+          <input type="number" v-model.number="selectedElement" />
+        </p>
+        <p>
+          <label>Radius</label>
+          <input type="number" min="1" max="400" v-model.number="elements[selectedElement].r" />
+        </p>
+        <p>
+          <label>Mass</label>
+          <input type="number" min="0.1" step="0.1" v-model.number="elements[selectedElement].m" />
+        </p>
+        <p>
+          <label>Color</label>
+          <input type="text" min="0.1" step="0.1" v-model.number="elements[selectedElement].color" />
+        </p>
+        <p>
+          <button v-bind:disabled="elements.length <= 1" v-on:click="removeElement(selectedElement)">delete</button>
+        </p>
+      </fieldset>
+      <fieldset>
+        <p>
+          <label>Frames per second:</label>
+          <input type="number" min="1" max="500" v-model.number="framesPerSecond" />
+        </p>
+        <p>
+          <label>Updates per Frame:</label>
+          <input type="number" min="1" max="10000" v-model.number="updatesPerFrame" />
+        </p>
+        <p>
+          <label>Timestep (s):</label>
+          <input type="number" disabled v-model.number="timestep" />
+        </p>
+        <p>
+          <label>Time (s):</label>
+          <input type="number" disabled v-model.number="time" />
+        </p>
+        <p>
+          <button v-on:click="pause = !pause">{{ pause ? "Resume" : "Pause" }}</button>
+          <button v-on:click="reset">Reset</button>
+        </p>
+        <p>
+          <label>Energy:</label>
+          <input type="number" v-model.number="energy" />
+        </p>
+        <p>
+          <label>Temperature:</label>
+          <input type="number" v-model.number="temperature" />
+        </p>
+      </fieldset>
     </form>
-    <table><tr>
-	<td>
-	  <b>Click</b>: 1 ball (drag for velocity)<br>
-	  <b>Shift+Click</b>: velocity-nullifying ball<br>
-	  <b>Ctrl+Click</b>: 10 random balls
-	</td>
-	<td>
-	  Particles: <span type="text" id="particles"></span>
-	  <br>
-	  Energy (log): <span type="text" id="energy"></span>
-	  <br>
-	  Mean Velocity: <span type="text" id="velocity"></span>
-	</td>
-	<script src="jquery.min.js"></script>
-	<script src="main.js"></script>
-  </body>
+  </div>
+</body>
 </html>

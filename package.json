@@ -1,0 +1,12 @@
+{
+  "name": "nbody",
+  "version": "1.0.0",
+  "author": "Erik E. Lorenz",
+  "dependencies": {
+    "vue": "^2.3.3",
+    "gulp": "^3.9.1"
+  },
+  "scripts": {
+    "install": "gulp lib"
+  }
+}

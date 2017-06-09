@@ -1,7 +1,7 @@
 body {
-    text-align: center;
+  text-align: center;
 }
 
-table {
-    text-align: left;
+fieldset {
+  display: inline-block;
 }

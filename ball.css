@@ -1,0 +1,29 @@
+﻿.ball {
+  border-radius: 100%;
+  border: black solid 1px;
+}
+
+#plot > .ball {
+  position: absolute;
+}
+
+.element {
+  display: inline-block;
+  margin: auto;
+  vertical-align: middle;
+}
+
+.element-container {
+  display: inline-block;
+  vertical-align: middle;
+  min-width: 100px;
+  max-width: 100px;
+  height: 100px;
+  max-height: 100px;
+  line-height: 100px;
+  overflow: hidden;
+}
+
+.element-container.selected {
+  background-color: #d3d3d3;
+}
