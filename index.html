@@ -13,7 +13,7 @@
 </head>
 <body>
   <div id="app">
-    <div id="plot" v-bind:style="plotsize" v-on:click.self="addBall">
+    <div id="plot" v-bind:style="plotsize" v-on:mousedown.self="startBallAddition" v-on:mouseup.self="finishBallAddition">
       <n-ball v-bind:ball="ball" v-for="(ball,index) in balls"></n-ball>
     </div>
     <div id="elements">

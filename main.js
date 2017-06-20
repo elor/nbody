@@ -46,16 +46,16 @@ window.onload = function () {
         physicsUpdate(this.balls, this.timestep, this.width, this.height);
 
         switch (this.targetmode) {
-        case 'none':
-          break;
-        case 'temperature':
-          holdTemperature(this.balls, this.temperature, this.targettemperature);
-          break;
-        case 'energy':
-          holdEnergy(this.balls, this.energy, this.targetenergy);
-          break;
-        default:
-          console.error('targetmode ' + ' not defined');
+          case 'none':
+            break;
+          case 'temperature':
+            holdTemperature(this.balls, this.temperature, this.targettemperature);
+            break;
+          case 'energy':
+            holdEnergy(this.balls, this.energy, this.targetenergy);
+            break;
+          default:
+            console.error('targetmode ' + ' not defined');
         }
 
         this.time += this.timestep;
@@ -88,8 +88,15 @@ window.onload = function () {
 
         return ball;
       },
-      addBall: function (event) {
-        this.balls.push(this.createBall(this.selectedElement, event.offsetX, this.height - event.offsetY));
+      startBallAddition: function (event) {
+        this.addedBall = this.createBall(this.selectedElement, event.offsetX, this.height - event.offsetY);
+        this.balls.push(this.addedBall);
+      },
+      finishBallAddition: function (event) {
+        var dx = event.offsetX - this.addedBall.x;
+        var dy = this.height - event.offsetY - this.addedBall.y;
+        this.addedBall.vx = 5 * dx;
+        this.addedBall.vy = 5 * dy;
       },
       runSimulation: function () {
         if (this.updateInterval) {
