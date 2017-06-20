@@ -38,6 +38,8 @@ window.onload = function () {
         }
         physicsUpdate(this.balls, this.timestep, this.width, this.height);
 
+        holdEnergy(balls, this.energy, this.targetenergy);
+
         this.time += this.timestep;
       },
       createBall: function (element, x, y, r, vx, vy) {
