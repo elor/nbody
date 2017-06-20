@@ -26,6 +26,8 @@ function initdata() {
     updatesPerFrame: 10,
     time: 0,
     selectedElement: 0,
-    pause: false
+    pause: false,
+    targettemperature: 20,
+    targetenergy: 10
   };
 }
