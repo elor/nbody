@@ -40,13 +40,17 @@ window.onload = function () {
         physicsUpdate(this.balls, this.timestep, this.width, this.height);
 
         this.time += this.timestep;
+        if (this.chartdata.nextUpdate <= this.time) {
+          this.updateChartData();
+          this.chartdata.nextUpdate += 0.05;
+        }
       },
       updateChartData: function () {
         this.chartdata.times.shift();
         this.chartdata.energies.shift();
         this.chartdata.temperatures.shift();
 
-        this.chartdata.times.push(Math.round(100*this.time)/100);
+        this.chartdata.times.push(this.time.toFixed(2));
         this.chartdata.energies.push(this.energy);
         this.chartdata.temperatures.push(this.temperature);
 
@@ -56,8 +60,8 @@ window.onload = function () {
 
         ball.x = x || this.width / 2;
         ball.y = y || this.height / 2;
-        ball.vx = 0 //vx || (Math.random() - 0.5) * this.width;
-        ball.vy = 0 //vy || (Math.random() - 0.5) * this.height;
+        ball.vx = 0;
+        ball.vy = 0;
         ball.element = element && this.elements.length > element ? this.elements[element] : this.elements[0];
 
         return ball;
@@ -74,14 +78,6 @@ window.onload = function () {
         if (this.framesPerSecond > 0) {
           this.updateInterval = setInterval(() => this.updateFrame(), 1000 * this.frameinterval);
         }
-      },
-      runGraphUpdates: function () {
-        if (this.chartInterval) {
-          clearInterval(this.chartInterval);
-          this.chartInterval = undefined;
-        }
-
-        this.chartInterval = setInterval(() => this.updateChartData(), 100);
       },
       addElement: function () {
         let newElement = Object.assign({}, element0);
@@ -119,7 +115,6 @@ window.onload = function () {
     },
     mounted: function () {
       this.runSimulation();
-      this.runGraphUpdates();
     }
   });
 };
