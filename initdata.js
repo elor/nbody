@@ -5,10 +5,10 @@ const element0 = {
 };
 
 const ball0 = {
-  x: 50,
-  y: 50,
-  vx: 149,
-  vy: 319,
+  x: 300,
+  y: 300,
+  vx: 0,
+  vy: 0,
   element: element0
 };
 
@@ -20,8 +20,8 @@ function initdata() {
     elements: [el0, el1],
     balls: [Object.assign({}, ball0, { element: el0 })],
     g: 9.81,
-    width: 800,
-    height: 800,
+    width: 600,
+    height: 600,
     framesPerSecond: 60,
     updatesPerFrame: 10,
     time: 0,

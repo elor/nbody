@@ -45,8 +45,8 @@ window.onload = function () {
 
         ball.x = x || this.width / 2;
         ball.y = y || this.height / 2;
-        ball.vx = vx || (Math.random() - 0.5) * this.width;
-        ball.vy = vy || (Math.random() - 0.5) * this.height;
+        ball.vx = 0 //vx || (Math.random() - 0.5) * this.width;
+        ball.vy = 0 //vy || (Math.random() - 0.5) * this.height;
         ball.element = element && this.elements.length > element ? this.elements[element] : this.elements[0];
 
         return ball;
