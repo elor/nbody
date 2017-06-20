@@ -27,3 +27,41 @@ var NElement = Vue.extend({
     }
   }
 });
+
+var NChart = Vue.extend({
+  extends: VueChartJs.Line,
+  props: ['xdata', 'ydata', 'title'],
+  methods: {
+    rerender() {
+      this._chart.update();
+    }
+  },
+  mounted() {
+    if (this.xdata.length == this.ydata.length && this.xdata.length > 0) {
+      this.renderChart({
+        labels: this.xdata,
+        datasets: [
+          {
+            label: this.title,
+            data: this.ydata
+          }
+        ]
+      },
+        {
+          responsive: true,
+          maintainAspectRatio: false,
+          animation: false,
+
+        }
+      );
+    }
+  },
+  watch: {
+    xdata() {
+      this.rerender();
+    },
+    ydata() {
+      this.rerender();
+    }
+  }
+});

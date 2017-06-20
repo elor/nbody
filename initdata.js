@@ -28,6 +28,11 @@ function initdata() {
     selectedElement: 0,
     pause: false,
     targettemperature: 20,
-    targetenergy: 10
+    targetenergy: 10,
+    chartdata: {
+      times: new Array(100).map(() => 0),
+      energies: new Array(100).map(() => 0),
+      temperatures: new Array(100).map(() => 0)
+    }
   };
 }

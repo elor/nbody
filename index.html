@@ -5,6 +5,7 @@
   <title>N-Body Testbed</title>
   <link rel="stylesheet" href="style.css" />
   <script src="vue.min.js"></script>
+  <script src="vue-chartjs.full.min.js"></script>
   <script src="vue-components.js"></script>
   <script src="physics.js"></script>
   <script src="initdata.js"></script>
@@ -86,7 +87,13 @@
         <p>
           <label>Target Temperature:</label>
           <input type="number" v-model.number="targettemperature" />
-        </p>        
+        </p>
+      </fieldset>
+      <fieldset>
+        <n-chart :xdata="chartdata.times" :ydata="chartdata.energies" title="Energy"></n-chart>
+      </fieldset>
+      <fieldset>
+        <n-chart :xdata="chartdata.times" :ydata="chartdata.temperatures" title="Temperature"></n-chart>
       </fieldset>
     </form>
   </div>

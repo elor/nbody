@@ -3,8 +3,9 @@
   "version": "1.0.0",
   "author": "Erik E. Lorenz",
   "dependencies": {
+    "gulp": "^3.9.1",
     "vue": "^2.3.3",
-    "gulp": "^3.9.1"
+    "vue-chartjs": "^2.6.5"
   },
   "scripts": {
     "install": "gulp lib"

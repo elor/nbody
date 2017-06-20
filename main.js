@@ -4,7 +4,8 @@ window.onload = function () {
     data: initdata(),
     components: {
       'n-ball': NBall,
-      'n-element': NElement
+      'n-element': NElement,
+      'n-chart': NChart
     },
     computed: {
       plotsize: function () {
@@ -38,9 +39,17 @@ window.onload = function () {
         }
         physicsUpdate(this.balls, this.timestep, this.width, this.height);
 
-        holdEnergy(balls, this.energy, this.targetenergy);
-
         this.time += this.timestep;
+      },
+      updateChartData: function () {
+        this.chartdata.times.shift();
+        this.chartdata.energies.shift();
+        this.chartdata.temperatures.shift();
+
+        this.chartdata.times.push(Math.round(100*this.time)/100);
+        this.chartdata.energies.push(this.energy);
+        this.chartdata.temperatures.push(this.temperature);
+
       },
       createBall: function (element, x, y, r, vx, vy) {
         var ball = Object.assign({}, ball0);
@@ -65,6 +74,14 @@ window.onload = function () {
         if (this.framesPerSecond > 0) {
           this.updateInterval = setInterval(() => this.updateFrame(), 1000 * this.frameinterval);
         }
+      },
+      runGraphUpdates: function () {
+        if (this.chartInterval) {
+          clearInterval(this.chartInterval);
+          this.chartInterval = undefined;
+        }
+
+        this.chartInterval = setInterval(() => this.updateChartData(), 100);
       },
       addElement: function () {
         let newElement = Object.assign({}, element0);
@@ -102,6 +119,7 @@ window.onload = function () {
     },
     mounted: function () {
       this.runSimulation();
+      this.runGraphUpdates();
     }
   });
 };
