@@ -96,6 +96,13 @@
           <label>Target Temperature:</label>
           <input type="number" v-model.number="targettemperature" />
         </p>
+        <p>Geben Sie an, was gehalten werden soll</p>
+        <input class="left" type="radio" id="holdEN" name="Halten" value="hEN">
+        <label for="holdEN"> Energie </label><br>
+        <input type="radio" id="holdTEMP" name="Halten" value="hTemp">
+        <label for="holdTEMP"> Temperatur </label><br>
+        <input type="radio" id="holdNO" name="Halten" value="hNO">
+        <label for="holdNO"> Keine </label>
       </fieldset>
       <fieldset>
         <n-chart :xdata="chartdata.times"
