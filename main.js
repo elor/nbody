@@ -45,6 +45,19 @@ window.onload = function () {
         }
         physicsUpdate(this.balls, this.timestep, this.width, this.height);
 
+        switch (this.targetmode) {
+        case 'none':
+          break;
+        case 'temperature':
+          holdTemperature(this.balls, this.temperature, this.targettemperature);
+          break;
+        case 'energy':
+          holdEnergy(this.balls, this.energy, this.targetenergy);
+          break;
+        default:
+          console.error('targetmode ' + ' not defined');
+        }
+
         this.time += this.timestep;
         if (this.chartdata.nextUpdate <= this.time) {
           this.updateChartData();

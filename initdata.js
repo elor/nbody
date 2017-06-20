@@ -19,7 +19,7 @@ function initdata() {
   return {
     elements: [el0, el1],
     balls: [
-      Object.assign({}, ball0, { element: el0, vy: 100 }),
+//      Object.assign({}, ball0, { element: el0, vy: 100 }),
       Object.assign({}, ball0, { element: el0, vy: -100, y:500 })
     ],
     g: 9.81,

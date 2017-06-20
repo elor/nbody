@@ -3,12 +3,12 @@ var sigma = 100;
 var energyscale = 10000;
 
 function LennardJones_12_6(dif) {
-  dif = Math.max(dif, sigma / 3);
+ // dif = Math.max(dif, sigma / 3);
   return epsilon * 4 * ((Math.pow(sigma / dif, 12)) - (Math.pow(sigma / dif, 6)));
 }
 
 function LennardJones_12_6_force(dif) {
-  dif = Math.max(dif, sigma / 3);
+ // dif = Math.max(dif, sigma / 3);
   return epsilon * 4 * ((Math.pow(sigma, 12) * Math.pow(dif, -13) * -12) - (Math.pow(sigma, 6) * Math.pow(dif, -7) * -6));
 }
 
@@ -123,19 +123,22 @@ function holdEnergy(balls, energy, targetenergy) {
             var bx = balls[i].x - balls[j].x;
             var by = balls[i].y - balls[j].y;
             var di = Math.sqrt((bx, 2) + Math.pow(by, 2));
-            Phi += LennardJones_12_6(di, epsilo, sigm);
+            Phi += LennardJones_12_6(di);
           }
         }
         var aender = Math.sqrt(targetenergy * energyscale - Phi) / Math.sqrt(energy * energyscale - Phi);
       }
       for (var i = 0; i < balls.length; i++) {
-        var aenderx = (balls[i].vx - balls[i].vx * aender) * 0.001;
-        var aendery = (balls[i].vy - balls[i].vy * aender) * 0.001;
-        balls[i].vx = balls[i].vx - aenderx;
-        balls[i].vy = balls[i].vy - aendery;
+//        var aenderx = (balls[i].vx - balls[i].vx * aender) * 0.001;
+//        var aendery = (balls[i].vy - balls[i].vy * aender) * 0.001;
+        balls[i].vx = balls[i].vx - (balls[i].vx - balls[i].vx * aender) * 0.001;
+        balls[i].vy = balls[i].vy - (balls[i].vy - balls[i].vy * aender) * 0.001;
       }
     }
   }
+}
+
+function holdTemperature(balls, temperature, targettemperature) {
 }
 
 function physicsUpdateOld(balls, timestep, width, height) {
