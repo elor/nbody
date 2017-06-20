@@ -24,7 +24,13 @@ window.onload = function () {
         return getTemperature(this.balls);
       },
       energy: function () {
-        return getEnergy(this.balls);
+        return this.kinetic + this.potential;
+      },
+      kinetic: function () {
+        return getKineticEnergy(this.balls);
+      },
+      potential: function () {
+        return getPotentialEnergy(this.balls);
       }
     },
     methods: {
@@ -48,12 +54,15 @@ window.onload = function () {
       updateChartData: function () {
         this.chartdata.times.shift();
         this.chartdata.energies.shift();
+        this.chartdata.kinetics.shift();
+        this.chartdata.potentials.shift();
         this.chartdata.temperatures.shift();
 
         this.chartdata.times.push(this.time.toFixed(2));
         this.chartdata.energies.push(this.energy);
+        this.chartdata.kinetics.push(this.kinetic);
+        this.chartdata.potentials.push(this.potential);
         this.chartdata.temperatures.push(this.temperature);
-
       },
       createBall: function (element, x, y, r, vx, vy) {
         var ball = Object.assign({}, ball0);

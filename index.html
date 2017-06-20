@@ -75,6 +75,14 @@
           <input type="number" v-model.number="energy" />
         </p>
         <p>
+          <label>Kinetic:</label>
+          <input type="number" v-model.number="kinetic" />
+        </p>
+        <p>
+          <label>Potential:</label>
+          <input type="number" v-model.number="potential" />
+        </p>
+        <p>
           <label>Temperature:</label>
           <input type="number" v-model.number="temperature" />
         </p>
@@ -90,10 +98,14 @@
         </p>
       </fieldset>
       <fieldset>
-        <n-chart :xdata="chartdata.times" :ydata="chartdata.energies" title="Energy"></n-chart>
+        <n-chart :xdata="chartdata.times"
+                 :ydata="[chartdata.energies, chartdata.potentials, chartdata.kinetics]"
+                 title="['Energy', 'Potential', 'Kinetic']"></n-chart>
       </fieldset>
       <fieldset>
-        <n-chart :xdata="chartdata.times" :ydata="chartdata.temperatures" title="Temperature"></n-chart>
+        <n-chart :xdata="chartdata.times"
+                 :ydata="[chartdata.temperatures]"
+                 :title="['Temperature']"></n-chart>
       </fieldset>
     </form>
   </div>

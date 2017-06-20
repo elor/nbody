@@ -36,6 +36,8 @@ function initdata() {
     chartdata: {
       times: new Array(100).map(() => 0),
       energies: new Array(100).map(() => 0),
+      potentials: new Array(100).map(() => 0),
+      kinetics: new Array(100).map(() => 0),
       temperatures: new Array(100).map(() => 0),
       nextUpdate: 0
     }

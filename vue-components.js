@@ -33,33 +33,37 @@ var NChart = Vue.extend({
   props: ['xdata', 'ydata', 'title'],
   methods: {
     rerender() {
-      this._chart.update();
+      if (this._chart) {
+        this._chart.update();
+      }
     }
   },
   mounted() {
-    if (this.xdata.length == this.ydata.length && this.xdata.length > 0) {
-      this.renderChart({
-        labels: this.xdata,
-        datasets: [
-          {
-            label: this.title,
-            data: this.ydata
-          }
-        ]
-      },
-        {
-          responsive: true,
-          maintainAspectRatio: false,
-          animation: false,
+    var colors = ['blue', 'green', 'red'];
 
+    this.renderChart({
+      labels: this.xdata,
+      datasets: this.ydata.map((data, index) => {
+        return {
+          label: this.title[index],
+          data: data,
+          fill: false,
+          borderColor: colors[index],
+          pointStyle: 'line'
+        };
+      }),
+    },
+      {
+        responsive: true,
+        maintainAspectRatio: false,
+        animation: false,
+        legend: {
+          fullWidth: true
         }
-      );
-    }
+      }
+    );
   },
   watch: {
-    xdata() {
-      this.rerender();
-    },
     ydata() {
       this.rerender();
     }
