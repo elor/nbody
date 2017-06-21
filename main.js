@@ -58,6 +58,8 @@ window.onload = function () {
             console.error('targetmode ' + ' not defined');
         }
 
+        this.removeOrphans();
+
         this.time += this.timestep;
         if (this.chartdata.nextUpdate <= this.time) {
           this.updateChartData();
@@ -76,6 +78,15 @@ window.onload = function () {
         this.chartdata.kinetics.push(this.kinetic);
         this.chartdata.potentials.push(this.potential);
         this.chartdata.temperatures.push(this.temperature);
+      },
+      removeOrphans: function () {
+        this.balls = this.balls.filter((ball) => {
+          var tolerance = 1.1;
+          return ball.x < this.width * tolerance
+            && ball.y < this.height * tolerance
+            && ball.x > this.width * (1 - tolerance)
+            && ball.y > this.height * (1 - tolerance);
+        });
       },
       createBall: function (element, x, y, r, vx, vy) {
         var ball = Object.assign({}, ball0);
