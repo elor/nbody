@@ -104,10 +104,13 @@ window.onload = function () {
         this.balls.push(this.addedBall);
       },
       finishBallAddition: function (event) {
-        var dx = event.offsetX - this.addedBall.x;
-        var dy = this.height - event.offsetY - this.addedBall.y;
-        this.addedBall.vx = 5 * dx;
-        this.addedBall.vy = 5 * dy;
+        if (this.addedBall) {
+          var dx = event.offsetX - this.addedBall.x;
+          var dy = this.height - event.offsetY - this.addedBall.y;
+          this.addedBall.vx = 5 * dx;
+          this.addedBall.vy = 5 * dy;
+          this.addedBall = undefined;
+        }
       },
       runSimulation: function () {
         if (this.updateInterval) {
