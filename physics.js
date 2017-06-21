@@ -3,12 +3,12 @@ var sigma = 100;
 var energyscale = 10000;
 
 function LennardJones_12_6(dif) {
- // dif = Math.max(dif, sigma / 3);
+ dif = Math.max(dif, sigma / 2);
   return epsilon * 4 * ((Math.pow(sigma / dif, 12)) - (Math.pow(sigma / dif, 6)));
 }
 
 function LennardJones_12_6_force(dif) {
- // dif = Math.max(dif, sigma / 3);
+ dif = Math.max(dif, sigma / 2);
   return epsilon * 4 * ((Math.pow(sigma, 12) * Math.pow(dif, -13) * -12) - (Math.pow(sigma, 6) * Math.pow(dif, -7) * -6));
 }
 
@@ -114,29 +114,22 @@ function getTemperature(balls) {
 
 function holdEnergy(balls, energy, targetenergy) {
   if (balls.length > 1) {
-    if (energy > 0) {
-      for (var i = 0; i < balls.length; i++) {
-        var v = Math.sqrt(Math.pow(balls[i].vy, 2) + Math.pow(balls[i].vx, 2));
-        var Phi = 0;
-        for (var j = 0; j < balls.length; j++) {
-          if (i == j) { } else {
-            var bx = balls[i].x - balls[j].x;
-            var by = balls[i].y - balls[j].y;
-            var di = Math.sqrt((bx, 2) + Math.pow(by, 2));
-            Phi += LennardJones_12_6(di);
-          }
-        }
-        var aender = Math.sqrt(targetenergy * energyscale - Phi) / Math.sqrt(energy * energyscale - Phi);
-      }
-      for (var i = 0; i < balls.length; i++) {
+    var pot = getPotentialEnergy(balls);
+    var kin = getKineticEnergy(balls);
+    var aender = (targetenergy*energyscale-pot)/(energy*energyscale-pot)-1;
+
+     for (var i = 0; i < balls.length; i++) {
+
+//        var v = Math.sqrt(Math.pow(balls[i].vy, 2) + Math.pow(balls[i].vx, 2));
+
 //        var aenderx = (balls[i].vx - balls[i].vx * aender) * 0.001;
 //        var aendery = (balls[i].vy - balls[i].vy * aender) * 0.001;
-        balls[i].vx = balls[i].vx - (balls[i].vx - balls[i].vx * aender) * 0.001;
-        balls[i].vy = balls[i].vy - (balls[i].vy - balls[i].vy * aender) * 0.001;
-      }
+        balls[i].vx += balls[i].vx * aender * 0.01;
+        balls[i].vy += balls[i].vy * aender * 0.01;
     }
   }
 }
+
 
 function holdTemperature(balls, temperature, targettemperature) {
 }
