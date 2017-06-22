@@ -23,14 +23,20 @@ window.onload = function () {
       temperature: function () {
         return getTemperature(this.balls);
       },
+      roh: function () {
+        return getroh(this.balls, this.width, this.height);
+      },
       energy: function () {
         return this.kinetic + this.potential;
       },
       kinetic: function () {
         return getKineticEnergy(this.balls);
       },
+      pressure: function () {
+        return getPressure(this.balls, this.temperature, this.width, this.height);
+      },
       potential: function () {
-        return getPotentialEnergy(this.balls);
+        return getPotentialEnergy(this.balls, this.targetpotential, this.sstark, this.estark);
       }
     },
     methods: {
@@ -43,16 +49,16 @@ window.onload = function () {
         if (this.pause) {
           return;
         }
-        physicsUpdate(this.balls, this.timestep, this.width, this.height);
+        physicsUpdate(this.balls, this.timestep, this.width, this.height, this.targetpotential, this.sstark, this.estark);
 
         switch (this.targetmode) {
           case 'none':
             break;
           case 'temperature':
-            holdTemperature(this.balls, this.temperature, this.targettemperature);
+            holdTemperature(this.balls, this.temperature, this.targettemperature, this.aetime, this.timestep);
             break;
           case 'energy':
-            holdEnergy(this.balls, this.energy, this.targetenergy);
+            holdEnergy(this.balls, this.energy, this.targetenergy, this.aetime, this.timestep, this.targetpotential, this.sstark, this.estark);
             break;
           default:
             console.error('targetmode ' + ' not defined');
