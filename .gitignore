@@ -1,5 +1,4 @@
-﻿*.min.js
-node_modules/
+﻿node_modules/
 .vs/
 *.dll
 obj/
